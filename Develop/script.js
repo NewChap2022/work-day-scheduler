@@ -1,5 +1,6 @@
 var tasks = [];
 
+// checking time and set different colors for past, present and future
 var timeChecking = function (taskEl) {
     var time = moment($(taskEl).find(".hour").text().trim(), "hh A");
     var currentTime = moment();
@@ -13,18 +14,20 @@ var timeChecking = function (taskEl) {
     };
 };
 
+// load tasks from localStorage
 var loadTasks = function () {
     var pastTasks = JSON.parse(localStorage.getItem("tasks"));
-
+    // if localStorage is empty, stop this function
     if (pastTasks === null) {
         return;
     } else {
         $.each(pastTasks, function (i) {
+            // check if the tasks belong to today's schedule
             if (moment(pastTasks[i].date).isSame(moment(), "date")) {
                 tasks.push(pastTasks[i]);
-                console.log(tasks);
             };
         });
+        // clear past tasks and add qualified tasks only
         localStorage.removeItem("tasks");
         localStorage.setItem("tasks", JSON.stringify(tasks));
 
@@ -32,16 +35,19 @@ var loadTasks = function () {
     }
 };
 
-var addToTimeBlocks = function() {
-    $(".hour").each(function(index, element) {
-        $.each(tasks, function(i) {
+// put tasks into html
+var addToTimeBlocks = function () {
+    // iterate tasks to put into correct time block
+    $(".hour").each(function (index, element) {
+        $.each(tasks, function (i) {
             if ($(element).text() === tasks[i].time) {
                 $(element).parent().find(".description").text(tasks[i].description);
             };
         });
-        });
-    };  
+    });
+};
 
+// save new tasks or update existing tasks
 var saveTask = function (task) {
     var savedTask = {
         description: task.text(),
@@ -50,21 +56,22 @@ var saveTask = function (task) {
     };
 
     var i = tasks.findIndex(element => element.time === savedTask.time);
-    console.log(i);
     if (i === -1) {
         tasks.push(savedTask);
         localStorage.setItem("tasks", JSON.stringify(tasks));
     } else {
         tasks[i].description = task.text();
-        console.log(tasks[i].description);
         localStorage.setItem("tasks", JSON.stringify(tasks));
     };
 };
 
+// display current date in header
 $("#currentDay").text(moment().format("dddd MMM Do YYYY"));
 
+// load past saved tasks to page
 loadTasks();
 
+// when click on the task, enable editing function
 $(".task-container").on("click", function () {
     var text = $(this).find(".description")
         .text()
@@ -76,6 +83,7 @@ $(".task-container").on("click", function () {
     $(this).find(".description").replaceWith(textInput);
 });
 
+// when click on save function, replace <p> with <textarea> and save tasks
 $(".saveBtn").click(function () {
     if ($(this).parent().find("textarea").length) {
         var textArea = $(this).parent().find("textarea");
@@ -86,15 +94,16 @@ $(".saveBtn").click(function () {
             .text(text);
 
         $(textArea).replaceWith(description);
-        console.log(description);
         saveTask(description);
     }
 });
 
+// checking current time when open the page
 $(".time-block").each(function (i, obj) {
     timeChecking(obj);
 });
 
+// automatically checking time and change the color accordingly every 60 minutes;
 var blockAudit = setInterval(function () {
     $(".time-block").each(function (i, obj) {
         timeChecking(obj);
