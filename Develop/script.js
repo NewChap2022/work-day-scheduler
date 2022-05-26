@@ -13,14 +13,24 @@ var timeChecking = function (taskEl) {
     };
 };
 
-var loadTasks = function() {
+var loadTasks = function () {
     var pastTasks = JSON.parse(localStorage.getItem("tasks"));
+
     if (pastTasks === null) {
         return false;
-    } else{}
-    // console.log(moment(pastTasks.date).isBefore(moment()));
-    // tasks = pastTasks.filter(task => moment(task.date).isBefore(moment()))
-};
+    } else {
+        for (i = 0; i < pastTasks.length; i++) {
+            if (moment(pastTasks[i].date).isSame(moment(), "date")) {
+                tasks.push(pastTasks[i]);
+                console.log(tasks);
+            };
+        }
+        localStorage.removeItem("tasks");
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
+    
+}
 
 var saveTask = function (task) {
     var savedTask = {
