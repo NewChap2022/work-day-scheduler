@@ -17,20 +17,30 @@ var loadTasks = function () {
     var pastTasks = JSON.parse(localStorage.getItem("tasks"));
 
     if (pastTasks === null) {
-        return false;
+        return;
     } else {
-        for (i = 0; i < pastTasks.length; i++) {
+        $.each(pastTasks, function (i) {
             if (moment(pastTasks[i].date).isSame(moment(), "date")) {
                 tasks.push(pastTasks[i]);
                 console.log(tasks);
             };
-        }
+        });
         localStorage.removeItem("tasks");
         localStorage.setItem("tasks", JSON.stringify(tasks));
-    }
 
-    
-}
+        addToTimeBlocks();
+    }
+};
+
+var addToTimeBlocks = function() {
+    $(".hour").each(function(index, element) {
+        $.each(tasks, function(i) {
+            if ($(element).text() === tasks[i].time) {
+                $(element).parent().find(".description").text(tasks[i].description);
+            };
+        });
+        });
+    };  
 
 var saveTask = function (task) {
     var savedTask = {
@@ -38,18 +48,22 @@ var saveTask = function (task) {
         date: moment().format("LL"),
         time: $(task.parents()[1]).find(".hour").text(),
     };
-    var i = tasks.findIndex(element => element = savedTask.time);
 
+    var i = tasks.findIndex(element => element.time === savedTask.time);
+    console.log(i);
     if (i === -1) {
         tasks.push(savedTask);
         localStorage.setItem("tasks", JSON.stringify(tasks));
     } else {
         tasks[i].description = task.text();
+        console.log(tasks[i].description);
         localStorage.setItem("tasks", JSON.stringify(tasks));
     };
 };
 
 $("#currentDay").text(moment().format("dddd MMM Do YYYY"));
+
+loadTasks();
 
 $(".task-container").on("click", function () {
     var text = $(this).find(".description")
@@ -72,7 +86,7 @@ $(".saveBtn").click(function () {
             .text(text);
 
         $(textArea).replaceWith(description);
-
+        console.log(description);
         saveTask(description);
     }
 });
