@@ -109,12 +109,3 @@ var blockAudit = setInterval(function () {
         timeChecking(obj);
     })
 }, (1000 * 60) * 60);
-
-// $(".container").on("blur", "textarea", function() {
-//     var text = $(this).parent().find(".description").text()
-//     var taskP = $("<p>")
-//     .addClass("description")
-//     .text(text);
-
-//     $(this).replaceWith(taskP);
-// });
