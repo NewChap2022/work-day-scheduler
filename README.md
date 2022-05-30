@@ -21,4 +21,4 @@ To make one function work, for me the best way is to write down what you plan to
 <img src=".\Develop\screenshot.png" alt="start page screenshot" width ="474" height="857"/>
 
 ## Link to Deployed Application
- https://newchap2022.github.io/work-day-scheduler/Develop/index.html
+ https://newchap2022.github.io/work-day-scheduler/index.html
