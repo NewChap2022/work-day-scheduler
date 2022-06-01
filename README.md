@@ -18,7 +18,7 @@ html, css(bootstrap), javascript(jquery)
 To make one function work, for me the best way is to write down what you plan to do in plain words and consider all possible issue or bugs may arise. It helps me and makes coding easier. "console.log" is really helpful along the way to detect problem earlier.
 
 ## Screenshot
-<img src=".\assets\images\screenshot.png" alt="start page screenshot" width ="474" height="857"/>
+<img src=".\assets\images\screenshot.png" alt="webpage screenshot" width ="474" height="857"/>
 
 ## Link to Deployed Application
  https://newchap2022.github.io/work-day-scheduler/index.html
