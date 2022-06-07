@@ -81,6 +81,7 @@ $(".task-container").on("click", function () {
         .val(text);
 
     $(this).find(".description").replaceWith(textInput);
+    textInput.select();
 });
 
 // when click on save function, replace <p> with <textarea> and save tasks
